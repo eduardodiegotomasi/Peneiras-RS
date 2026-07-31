@@ -1,0 +1,27 @@
+{
+  "ano": 2012,
+  "masculino": [
+    {
+      "clube": "Clube Exemplo",
+      "cidade": "Porto Alegre/RS",
+      "data": "20/09/2026",
+      "horario": "09h",
+      "inscricao": "Gratuita",
+      "descricao": "Levar documento, roupa de treino, chuteira e água.",
+      "fonte": "Instagram oficial do clube",
+      "link": "https://exemplo.com"
+    }
+  ],
+  "feminino": [
+    {
+      "clube": "Clube Feminino Exemplo",
+      "cidade": "Canoas/RS",
+      "data": "28/09/2026",
+      "horario": "14h",
+      "inscricao": "Gratuita",
+      "descricao": "Comparecer acompanhada por um responsável.",
+      "fonte": "Site oficial do organizador",
+      "link": "https://exemplo.com"
+    }
+  ]
+}
