@@ -1,0 +1,27 @@
+{
+  "ano": 2010,
+  "masculino": [
+    {
+      "clube": "",
+      "cidade": "",
+      "data": "",
+      "horario": "",
+      "inscricao": "",
+      "descricao": "",
+      "fonte": "",
+      "link": ""
+    }
+  ],
+  "feminino": [
+    {
+      "clube": "EC Novo Hamburgo",
+      "cidade": "Novo Hamburgo/RS",
+      "data": "16/08/2026",
+      "horario": "10h",
+      "inscricao": ".",
+      "descricao": "Levar RG.",
+      "fonte": "futebolpeneira",
+      "link": "https://futebolpeneira.com.br/ec-novo-hamburgo-rs-feminino-com-novas-peneiras/"
+    }
+  ]
+}
