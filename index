@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Peneiras de futebol no Rio Grande do Sul organizadas por categoria.">
+  <title>Peneiras RS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <span class="badge">Futebol de base</span>
+      <h1>Peneiras RS</h1>
+      <p>Encontre oportunidades de avaliação organizadas pelo ano de nascimento.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="categories">
+      <h2>Selecione sua categoria</h2>
+      <p class="instruction">Toque no ano de nascimento para ver as peneiras disponíveis.</p>
+
+      <div class="category-grid">
+        <a class="category-card" href="categorias/2010.html">
+          <strong>2010</strong>
+          <span>Ver peneiras</span>
+        </a>
+
+        <a class="category-card" href="categorias/2011.html">
+          <strong>2011</strong>
+          <span>Ver peneiras</span>
+        </a>
+
+        <a class="category-card" href="categorias/2012.html">
+          <strong>2012</strong>
+          <span>Ver peneiras</span>
+        </a>
+
+        <a class="category-card" href="categorias/2013.html">
+          <strong>2013</strong>
+          <span>Ver peneiras</span>
+        </a>
+
+        <a class="category-card" href="categorias/2014.html">
+          <strong>2014</strong>
+          <span>Ver peneiras</span>
+        </a>
+
+        <a class="category-card" href="categorias/2015.html">
+          <strong>2015</strong>
+          <span>Ver peneiras</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="notice">
+      <h2>Atenção</h2>
+      <p>
+        Este site apenas organiza e divulga informações. Sempre confirme os dados
+        diretamente no canal oficial do clube ou organizador.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Peneiras RS — Informações para atletas e responsáveis.</p>
+    </div>
+  </footer>
+</body>
+</html>
