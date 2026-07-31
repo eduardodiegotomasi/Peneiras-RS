@@ -1,0 +1,27 @@
+{
+  "ano": 2013,
+  "masculino": [
+    {
+      "clube": "Aimoré",
+      "cidade": "São Leopoldo/RS",
+      "data": "20/06/2026",
+      "horario": "09h",
+      "inscricao": "20 reais",
+      "descricao": ".",
+      "fonte": "futebolpeneira",
+      "link": "https://futebolpeneira.com.br/aimore-rs-com-novas-peneiras/"
+    }
+  ],
+  "feminino": [
+    {
+      "clube": "Clube Feminino Exemplo",
+      "cidade": "Novo Hamburgo/RS",
+      "data": "16/08/2026",
+      "horario": "10h",
+      "inscricao": ".",
+      "descricao": "Levar RG.",
+      "fonte": "futebolpeneira",
+      "link": "https://futebolpeneira.com.br/ec-novo-hamburgo-rs-feminino-com-novas-peneiras/"
+    }
+  ]
+}
