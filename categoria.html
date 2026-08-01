@@ -79,7 +79,7 @@
       document.title = `Categoria ${ano} | Peneiras RS`;
 
       try {
-        const resposta = await fetch(`dados/${ano}.json`);
+        const resposta = await fetch(`${ano}.json`);
         if (!resposta.ok) throw new Error("JSON não encontrado");
 
         const dados = await resposta.json();
