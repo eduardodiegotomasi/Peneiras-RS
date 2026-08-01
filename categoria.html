@@ -3,116 +3,285 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Categoria | Peneiras RS</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
   <header class="page-header">
     <div class="container">
+
       <a href="index.html">← Voltar</a>
+
       <h1 id="titulo">Categoria</h1>
+
       <p id="descricao">Carregando...</p>
+
     </div>
   </header>
 
+
   <main class="container">
-    <section>
-      <h2>Futebol masculino</h2>
-      <div id="masculino" class="tryout-list"></div>
-    </section>
 
     <section>
-      <h2>Futebol feminino</h2>
-      <div id="feminino" class="tryout-list"></div>
+
+      <h2>Futebol masculino</h2>
+
+      <div
+        id="masculino"
+        class="tryout-list"
+      ></div>
+
     </section>
+
+
+    <section>
+
+      <h2>Futebol feminino</h2>
+
+      <div
+        id="feminino"
+        class="tryout-list"
+      ></div>
+
+    </section>
+
   </main>
-  <span class="${classeStatus}">
-      ${textoStatus}
-  </span>
+
+
   <script>
 
-    const status = peneira.status || "não ocorreu ainda";
+    const params = new URLSearchParams(
+      window.location.search
+    );
 
-    let classeStatus = "status-open";
-    let textoStatus = "Inscrições abertas";
-    
-    if (status === "encerrada") {
-        classeStatus = "status-closed";
-        textoStatus = "Peneira encerrada";
-    }
-    
-    if (status === "embreve") {
-        classeStatus = "status-soon";
-        textoStatus = "Em breve";
-    }
-    const params = new URLSearchParams(window.location.search);
     const ano = params.get("ano");
 
-    const titulo = document.getElementById("titulo");
-    const descricao = document.getElementById("descricao");
-    const masculino = document.getElementById("masculino");
-    const feminino = document.getElementById("feminino");
+
+    const titulo =
+      document.getElementById("titulo");
+
+    const descricao =
+      document.getElementById("descricao");
+
+    const masculino =
+      document.getElementById("masculino");
+
+    const feminino =
+      document.getElementById("feminino");
+
 
     function cartao(peneira) {
+
+      const status =
+        peneira.status || "aberta";
+
+
+      let classeStatus = "status-open";
+
+      let textoStatus =
+        "Inscrições abertas";
+
+
+      if (status === "encerrada") {
+
+        classeStatus = "status-closed";
+
+        textoStatus = "Peneira encerrada";
+
+      }
+
+
+      if (status === "embreve") {
+
+        classeStatus = "status-soon";
+
+        textoStatus = "Em breve";
+
+      }
+
+
       return `
-        <article class="tryout-card">
-          <h3>${peneira.clube}</h3>
-          <p><strong>Cidade:</strong> ${peneira.cidade}</p>
-          <p><strong>Data:</strong> ${peneira.data}</p>
-          <p><strong>Horário:</strong> ${peneira.horario || "A confirmar"}</p>
-          <p><strong>Inscrição:</strong> ${peneira.inscricao || "A confirmar"}</p>
-          <p>${peneira.descricao || ""}</p>
-          <a class="source-link"
-             href="${peneira.link}"
-             target="_blank"
-             rel="noopener noreferrer">
-             Ver divulgação original
+
+        <article class="tryout-card ${classeStatus}">
+
+          <span class="status-badge ${classeStatus}">
+            ${textoStatus}
+          </span>
+
+
+          <h3>
+            ${peneira.clube}
+          </h3>
+
+
+          <p>
+            <strong>Cidade:</strong>
+            ${peneira.cidade}
+          </p>
+
+
+          <p>
+            <strong>Data:</strong>
+            ${peneira.data}
+          </p>
+
+
+          <p>
+            <strong>Horário:</strong>
+            ${peneira.horario || "A confirmar"}
+          </p>
+
+
+          <p>
+            <strong>Inscrição:</strong>
+            ${peneira.inscricao || "A confirmar"}
+          </p>
+
+
+          <p>
+            ${peneira.descricao || ""}
+          </p>
+
+
+          <a
+            class="source-link"
+            href="${peneira.link}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ver divulgação original
           </a>
-          <p><small>Fonte: ${peneira.fonte || "Fonte original"}</small></p>
+
+
+          <p>
+            <small>
+              Fonte:
+              ${peneira.fonte || "Fonte original"}
+            </small>
+          </p>
+
         </article>
+
       `;
+
     }
+
 
     function mostrarLista(elemento, lista) {
+
       if (!lista || lista.length === 0) {
+
         elemento.innerHTML = `
+
           <div class="empty-message">
-            <p>Nenhuma peneira cadastrada no momento.</p>
-          </div>`;
+
+            <p>
+              Nenhuma peneira cadastrada no momento.
+            </p>
+
+          </div>
+
+        `;
+
         return;
+
       }
-      elemento.innerHTML = lista.map(cartao).join("");
+
+
+      elemento.innerHTML =
+        lista.map(cartao).join("");
+
     }
+
 
     async function carregar() {
+
       if (!ano) {
-        titulo.textContent = "Categoria inválida";
-        descricao.textContent = "Volte e selecione um ano.";
+
+        titulo.textContent =
+          "Categoria inválida";
+
+        descricao.textContent =
+          "Volte e selecione um ano.";
+
         return;
+
       }
 
-      titulo.textContent = `Categoria ${ano}`;
-      descricao.textContent = `Peneiras para atletas nascidos em ${ano}.`;
-      document.title = `Categoria ${ano} | Peneiras RS`;
+
+      titulo.textContent =
+        `Categoria ${ano}`;
+
+      descricao.textContent =
+        `Peneiras para atletas nascidos em ${ano}.`;
+
+      document.title =
+        `Categoria ${ano} | Peneiras RS`;
+
 
       try {
-        const resposta = await fetch(`${ano}.json`);
-        if (!resposta.ok) throw new Error("JSON não encontrado");
 
-        const dados = await resposta.json();
-        mostrarLista(masculino, dados.masculino);
-        mostrarLista(feminino, dados.feminino);
+        const resposta =
+          await fetch(`${ano}.json`);
+
+
+        if (!resposta.ok) {
+
+          throw new Error(
+            "JSON não encontrado"
+          );
+
+        }
+
+
+        const dados =
+          await resposta.json();
+
+
+        mostrarLista(
+          masculino,
+          dados.masculino
+        );
+
+
+        mostrarLista(
+          feminino,
+          dados.feminino
+        );
+
       } catch (erro) {
+
         masculino.innerHTML = `
+
           <div class="empty-message">
-            <p>Não foi possível carregar <strong>dados/${ano}.json</strong>.</p>
-          </div>`;
+
+            <p>
+              Não foi possível carregar
+              <strong>${ano}.json</strong>.
+            </p>
+
+          </div>
+
+        `;
+
+
         feminino.innerHTML = "";
+
+
         console.error(erro);
+
       }
+
     }
 
+
     carregar();
+
   </script>
+
 </body>
 </html>
