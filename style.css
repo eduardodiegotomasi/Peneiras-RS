@@ -21,6 +21,33 @@ body {
   line-height: 1.6;
 }
 
+.status-open{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    background:#dff5e6;
+    color:#136b37;
+    font-weight:bold;
+}
+
+.status-soon{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    background:#fff4cc;
+    color:#9a6a00;
+    font-weight:bold;
+}
+
+.status-closed{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    background:#ececec;
+    color:#666;
+    font-weight:bold;
+}
+
 .container {
   width: min(100% - 32px, 960px);
   margin: 0 auto;
