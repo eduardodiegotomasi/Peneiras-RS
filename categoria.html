@@ -28,6 +28,21 @@
   </main>
 
   <script>
+
+    const status = peneira.status || "aberta";
+
+    let classeStatus = "status-open";
+    let textoStatus = "Inscrições abertas";
+    
+    if (status === "encerrada") {
+        classeStatus = "status-closed";
+        textoStatus = "Peneira encerrada";
+    }
+    
+    if (status === "embreve") {
+        classeStatus = "status-soon";
+        textoStatus = "Em breve";
+    }
     const params = new URLSearchParams(window.location.search);
     const ano = params.get("ano");
 
