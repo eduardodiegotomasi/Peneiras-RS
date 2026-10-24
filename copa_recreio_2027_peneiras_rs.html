@@ -283,7 +283,7 @@
     <!-- Aba Jogos -->
     <section id="tab-jogos" class="tab-content" style="display: none;">
       <div class="card">
-        <h2>Rodadas & Jogos</h2>
+        <h2>Rodadas & Jogos (Pontos Corridos)</h2>
         <div id="matchesContainer"></div>
       </div>
     </section>
@@ -291,25 +291,61 @@
     <!-- Aba Mata-Mata -->
     <section id="tab-matamata" class="tab-content" style="display: none;">
       <div class="card">
-        <h2>Fase Final (Playoffs)</h2>
+        <h2>Fase Final (Playoffs & Finais)</h2>
+        <p style="color:#64748b; font-size:0.9rem;">As semifinais cruzam automaticamente o 1º x 4º e o 2º x 3º da tabela. Os vencedores avançam para a Grande Final.</p>
+        
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          
+          <!-- Semifinal 1 -->
           <div class="match-card">
-            <div class="match-header"><strong>Semifinal 1</strong></div>
+            <div class="match-header">
+              <span>Semifinal 1 (1º vs 4º)</span>
+              <span id="badge-semi1" class="window-status"></span>
+            </div>
             <div class="match-body">
               <span class="team-name" id="semi1-t1">1º Colocado</span>
+              <input type="number" id="semi1-s1" class="score-input">
               <span>x</span>
+              <input type="number" id="semi1-s2" class="score-input">
               <span class="team-name right" id="semi1-t2">4º Colocado</span>
             </div>
+            <div style="margin-top: 0.75text; text-align: right;" id="action-semi1"></div>
           </div>
+
+          <!-- Semifinal 2 -->
           <div class="match-card">
-            <div class="match-header"><strong>Semifinal 2</strong></div>
+            <div class="match-header">
+              <span>Semifinal 2 (2º vs 3º)</span>
+              <span id="badge-semi2" class="window-status"></span>
+            </div>
             <div class="match-body">
               <span class="team-name" id="semi2-t1">2º Colocado</span>
+              <input type="number" id="semi2-s1" class="score-input">
               <span>x</span>
+              <input type="number" id="semi2-s2" class="score-input">
               <span class="team-name right" id="semi2-t2">3º Colocado</span>
             </div>
+            <div style="margin-top: 0.75text; text-align: right;" id="action-semi2"></div>
           </div>
+
         </div>
+
+        <!-- Grande Final -->
+        <div class="match-card" style="margin-top: 1.5rem; border-color: var(--accent);">
+          <div class="match-header" style="color: var(--accent);">
+            <span>🥇 Grande Final</span>
+            <span id="badge-final" class="window-status"></span>
+          </div>
+          <div class="match-body">
+            <span class="team-name" id="final-t1">Vencedor Semi 1</span>
+            <input type="number" id="final-s1" class="score-input">
+            <span>x</span>
+            <input type="number" id="final-s2" class="score-input">
+            <span class="team-name right" id="final-t2">Vencedor Semi 2</span>
+          </div>
+          <div style="margin-top: 0.75text; text-align: right;" id="action-final"></div>
+        </div>
+
       </div>
     </section>
 
@@ -325,7 +361,20 @@
           </div>
         </div>
         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
-        <h3>Criar Jogo & Estipular Janela de Edição</h3>
+        <h3>Configurar Janela Geral do Mata-Mata / Jogos</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
+          <div class="form-group">
+            <label>Início da Janela:</label>
+            <input type="datetime-local" id="playoffWindowStart" class="form-control" onchange="updatePlayoffWindow()">
+          </div>
+          <div class="form-group">
+            <label>Fim da Janela:</label>
+            <input type="datetime-local" id="playoffWindowEnd" class="form-control" onchange="updatePlayoffWindow()">
+          </div>
+        </div>
+
+        <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+        <h3>Criar Jogo de Pontos Corridos</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
           <div class="form-group">
             <label>Time Mandante:</label>
@@ -416,7 +465,7 @@
 
   <script>
     // ----------------------------------------------------
-    // 1. CONFIGURAÇÃO DO FIREBASE (COM AS SUAS CHAVES REAIS)
+    // 1. CONFIGURAÇÃO DO FIREBASE
     // ----------------------------------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBLJe0yUGzx7wATxPEayqvd6dMQgWM4c_k",
@@ -438,7 +487,14 @@
       passwords: { superadmin: "admin123", presidente: "presi2027", comissao: "esportes123", membro: "gremio123" },
       teams: [],
       matches: [],
-      pendingApprovals: []
+      pendingApprovals: [],
+      playoffs: {
+        windowStart: '',
+        windowEnd: '',
+        semi1: { scoreA: null, scoreB: null },
+        semi2: { scoreA: null, scoreB: null },
+        final: { scoreA: null, scoreB: null }
+      }
     };
 
     // ----------------------------------------------------
@@ -456,6 +512,7 @@
         state.matches = data.matches ? Object.values(data.matches) : [];
         state.pendingApprovals = data.pendingApprovals ? Object.values(data.pendingApprovals) : [];
         if (data.passwords) state.passwords = data.passwords;
+        if (data.playoffs) state.playoffs = Object.assign(state.playoffs, data.playoffs);
       } else {
         seedInitialData();
       }
@@ -476,13 +533,6 @@
         { id: 4, name: '9º Ano A' }
       ];
       db.ref('teams').set(initialTeams);
-      db.ref('passwords').set(state.passwords);
-    }
-
-    function syncToFirebase() {
-      db.ref('teams').set(state.teams);
-      db.ref('matches').set(state.matches);
-      db.ref('pendingApprovals').set(state.pendingApprovals);
       db.ref('passwords').set(state.passwords);
     }
 
@@ -560,11 +610,11 @@
       event.currentTarget.classList.add('active');
     }
 
-    function isWindowOpen(match) {
+    function isWindowOpen(startStr, endStr) {
       if (state.currentUserRole === 'presidente' || state.currentUserRole === 'superadmin') return true;
-      if (!match.windowStart || !match.windowEnd) return true;
+      if (!startStr || !endStr) return true;
       const now = new Date();
-      return now >= new Date(match.windowStart) && now <= new Date(match.windowEnd);
+      return now >= new Date(startStr) && now <= new Date(endStr);
     }
 
     function calculateStandings() {
@@ -606,11 +656,69 @@
             <td>${st.GP}</td><td>${st.GC}</td><td>${st.SG}</td>
           </tr>`;
       });
+      renderPlayoffs(standings);
+    }
+
+    function renderPlayoffs(standings) {
+      let t1 = "1º Colocado", t2 = "4º Colocado", t3 = "2º Colocado", t4 = "3º Colocado";
       if (standings.length >= 4) {
-        document.getElementById('semi1-t1').textContent = standings[0].name;
-        document.getElementById('semi1-t2').textContent = standings[3].name;
-        document.getElementById('semi2-t1').textContent = standings[1].name;
-        document.getElementById('semi2-t2').textContent = standings[2].name;
+        t1 = standings[0].name;
+        t4 = standings[3].name;
+        t3 = standings[1].name;
+        t2 = standings[2].name; // semi2: 2º vs 3º
+      }
+
+      document.getElementById('semi1-t1').textContent = t1;
+      document.getElementById('semi1-t2').textContent = t4;
+      document.getElementById('semi2-t1').textContent = t3;
+      document.getElementById('semi2-t2').textContent = t4.replace(t4, standings.length >= 4 ? standings[2].name : '3º Colocado');
+
+      // Valores dos inputs
+      const s1 = state.playoffs.semi1;
+      const s2 = state.playoffs.semi2;
+      const sf = state.playoffs.final;
+
+      document.getElementById('semi1-s1').value = s1.scoreA !== null ? s1.scoreA : '';
+      document.getElementById('semi1-s2').value = s1.scoreB !== null ? s1.scoreB : '';
+      document.getElementById('semi2-s1').value = s2.scoreA !== null ? s2.scoreA : '';
+      document.getElementById('semi2-s2').value = s2.scoreB !== null ? s2.scoreB : '';
+
+      // Determinar vencedores para a Final
+      let finalTeam1 = "Vencedor Semi 1";
+      let finalTeam2 = "Vencedor Semi 2";
+
+      if (s1.scoreA !== null && s1.scoreB !== null) {
+        finalTeam1 = s1.scoreA >= s1.scoreB ? t1 : t4;
+      }
+      if (s2.scoreA !== null && s2.scoreB !== null) {
+        finalTeam2 = s2.scoreA >= s2.scoreB ? (standings.length >= 4 ? standings[1].name : '2º Colocado') : (standings.length >= 4 ? standings[2].name : '3º Colocado');
+      }
+
+      document.getElementById('final-t1').textContent = finalTeam1;
+      document.getElementById('final-t2').textContent = finalTeam2;
+      document.getElementById('final-s1').value = sf.scoreA !== null ? sf.scoreA : '';
+      document.getElementById('final-s2').value = sf.scoreB !== null ? sf.scoreB : '';
+
+      // Controle de Janela e Permissões no Mata-Mata
+      const playoffOpen = isWindowOpen(state.playoffs.windowStart, state.playoffs.windowEnd);
+      const canEditPlayoffs = (state.currentUserRole === 'presidente' || state.currentUserRole === 'superadmin') || (state.currentUserRole === 'comissao' && playoffOpen);
+
+      ['semi1-s1', 'semi1-s2', 'semi2-s1', 'semi2-s2', 'final-s1', 'final-s2'].forEach(id => {
+        document.getElementById(id).disabled = !canEditPlayoffs;
+      });
+
+      const badgeHTML = playoffOpen ? `<span class="window-status window-open">🔓 Janela Aberta</span>` : `<span class="window-status window-closed">🔒 Janela Fechada</span>`;
+      document.getElementById('badge-semi1').innerHTML = badgeHTML;
+      document.getElementById('badge-semi2').innerHTML = badgeHTML;
+      document.getElementById('badge-final').innerHTML = badgeHTML;
+
+      document.getElementById('action-semi1').innerHTML = canEditPlayoffs ? `<button class="btn btn-primary btn-sm" onclick="savePlayoff('semi1')">Salvar Semi 1</button>` : '';
+      document.getElementById('action-semi2').innerHTML = canEditPlayoffs ? `<button class="btn btn-primary btn-sm" onclick="savePlayoff('semi2')">Salvar Semi 2</button>` : '';
+      document.getElementById('action-final').innerHTML = canEditPlayoffs ? `<button class="btn btn-success btn-sm" onclick="savePlayoff('final')">Salvar Final</button>` : '';
+
+      if (document.getElementById('playoffWindowStart')) {
+        document.getElementById('playoffWindowStart').value = state.playoffs.windowStart || '';
+        document.getElementById('playoffWindowEnd').value = state.playoffs.windowEnd || '';
       }
     }
 
@@ -621,7 +729,7 @@
       state.matches.forEach(m => {
         const teamA = state.teams.find(t => t.id === m.teamAId);
         const teamB = state.teams.find(t => t.id === m.teamBId);
-        const open = isWindowOpen(m);
+        const open = isWindowOpen(m.windowStart, m.windowEnd);
 
         const canEditDirectly = (state.currentUserRole === 'presidente' || state.currentUserRole === 'superadmin') || (state.currentUserRole === 'comissao' && open);
         const canSubmitForApproval = (state.currentUserRole === 'membro');
@@ -685,7 +793,30 @@
       renderOptions();
     }
 
-    // Ações do Usuário
+    // Ações de Salvamento do Mata-Mata
+    function savePlayoff(stage) {
+      const sA = document.getElementById(`${stage}-s1`).value;
+      const sB = document.getElementById(`${stage}-s2`).value;
+
+      if (sA === '' || sB === '') return alert('Preencha ambos os placares!');
+
+      state.playoffs[stage].scoreA = parseInt(sA);
+      state.playoffs[stage].scoreB = parseInt(sB);
+
+      db.ref(`playoffs/${stage}`).set(state.playoffs[stage]);
+      alert('Placar salvo com sucesso!');
+    }
+
+    function updatePlayoffWindow() {
+      const start = document.getElementById('playoffWindowStart').value;
+      const end = document.getElementById('playoffWindowEnd').value;
+      state.playoffs.windowStart = start;
+      state.playoffs.windowEnd = end;
+      db.ref('playoffs/windowStart').set(start);
+      db.ref('playoffs/windowEnd').set(end);
+    }
+
+    // Ações dos Pontos Corridos
     function saveScore(matchId) {
       const scoreA = document.getElementById(`scoreA_${matchId}`).value;
       const scoreB = document.getElementById(`scoreB_${matchId}`).value;
@@ -719,7 +850,8 @@
         state.matches[matchIndex].status = 'finished';
       }
       state.pendingApprovals.splice(index, 1);
-      syncToFirebase();
+      db.ref('matches').set(state.matches);
+      db.ref('pendingApprovals').set(state.pendingApprovals);
     }
 
     function rejectScore(index) {
