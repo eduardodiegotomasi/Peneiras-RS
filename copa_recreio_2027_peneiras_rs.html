@@ -3,743 +3,715 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Acompanhe a Copa Recreio 2027 - Tabela, resultados, chaveamento do mata-mata e atualizações do Grêmio Estudantil.">
   <title>Copa Recreio 2027 — Peneiras RS</title>
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#f0fdf4',
-              100: '#dcfce7',
-              500: '#22c55e',
-              600: '#16a34a',
-              700: '#15803d',
-              800: '#166534',
-              900: '#14532d',
-            }
-          }
-        }
-      }
-    }
-  </script>
-
+  <link rel="stylesheet" href="style.css">
   <style>
+    /* Estilos Específicos do Campeonato */
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --accent: #16a34a;
+      --warning: #eab308;
+      --danger: #dc2626;
+      --bg-card: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: #f8fafc;
-      color: #1e293b;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      height: 6px;
-      width: 6px;
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1rem;
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f5f9;
+
+    /* Header & Navigation */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: #fff;
+      padding: 2.5rem 0 1.5rem 0;
+      border-bottom: 4px solid var(--accent);
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
+
+    .badge {
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
+
+    /* User Auth Status Bar */
+    .auth-bar {
+      background-color: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .auth-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .role-pill {
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      color: white;
+      text-transform: uppercase;
+    }
+
+    .role-superadmin { background-color: #7c3aed; }
+    .role-presidente { background-color: #1e3a8a; }
+    .role-comissao { background-color: #0d9488; }
+    .role-membro { background-color: #d97706; }
+    .role-visitante { background-color: #64748b; }
+
+    /* Tabs & Navigation */
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1.25rem;
+      border: none;
+      background: none;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Cards & Tables */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.75rem 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .team-row:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* Match Box UI */
+    .match-card {
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #fff;
+    }
+
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 0.5rem;
+    }
+
+    .match-body {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .team-name {
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .team-name.right {
+      text-align: right;
+    }
+
+    .score-input {
+      width: 50px;
+      padding: 0.4rem;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
+    }
+
+    .window-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+    }
+
+    .window-open { background-color: #dcfce7; color: #15803d; }
+    .window-closed { background-color: #fee2e2; color: #b91c1c; }
+
+    /* Buttons & Forms */
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary { background-color: var(--primary); color: white; }
+    .btn-success { background-color: var(--accent); color: white; }
+    .btn-danger { background-color: var(--danger); color: white; }
+    .btn-secondary { background-color: #64748b; color: white; }
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
+
+    .btn:hover { opacity: 0.9; }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 0.375rem;
+      box-sizing: border-box;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      max-width: 450px;
+      width: 90%;
+    }
+
+    .alert {
+      padding: 0.75rem;
+      border-radius: 0.375rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    .alert-info { background: #e0f2fe; color: #0369a1; }
+    .alert-warning { background: #fef3c7; color: #92400e; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased">
+<body>
 
-  <!-- Top Header / Bar -->
-  <header class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 text-white border-b border-brand-800/40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <div class="flex items-center space-x-2">
-            <a href="index.html" class="inline-flex items-center text-xs font-semibold uppercase tracking-wider bg-brand-500/20 text-brand-300 px-2.5 py-1 rounded-full border border-brand-500/30 hover:bg-brand-500/30 transition">
-              <i class="fa-solid fa-arrow-left mr-1.5"></i> Voltar para Peneiras RS
-            </a>
-            <span class="inline-flex items-center text-xs font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-full border border-amber-500/30">
-              <i class="fa-solid fa-trophy mr-1.5"></i> Edição 2027
-            </span>
-          </div>
-          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-2 flex items-center gap-3">
-            <span>Copa Recreio 2027</span>
-            <span class="text-xs bg-emerald-600 text-white font-medium px-2 py-0.5 rounded-md hidden sm:inline-block">Grêmio Estudantil</span>
-          </h1>
-          <p class="text-slate-300 text-sm sm:text-base mt-1 max-w-2xl">
-            Campeonato escolar oficial. Acompanhe a tabela de classificação, os placares dos jogos e a fase final do mata-mata.
-          </p>
-        </div>
-
-        <!-- Role Switcher Panel (Quick Demo Toggle) -->
-        <div class="bg-slate-800/90 border border-slate-700 p-3.5 rounded-xl shadow-lg backdrop-blur">
-          <div class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
-            <span><i class="fa-solid fa-user-shield text-brand-400 mr-1.5"></i> Simulação de Perfil</span>
-            <span id="role-badge-display" class="text-[10px] px-2 py-0.5 rounded bg-brand-500 text-white font-bold">Presidente</span>
-          </div>
-          <select id="role-selector" onchange="switchRole(this.value)" class="w-full bg-slate-900 text-slate-100 text-sm rounded-lg border border-slate-600 p-2 focus:ring-2 focus:ring-brand-500 focus:outline-none">
-            <option value="president">👑 Presidente do Grêmio (Acesso Total)</option>
-            <option value="sports_comm">⚽ Comissão de Esportes (Janela Restrita)</option>
-            <option value="gremio_member">✍️ Membro do Grêmio (Requer Aprovação)</option>
-            <option value="visitor">👁️ Visitante (Apenas Visualização)</option>
-          </select>
-          <div class="mt-2 text-[11px] text-slate-400 leading-tight" id="role-description">
-            Acesso total: gerencie times, estipule janelas de tempo, edite qualquer jogo e aprove solicitações.
-          </div>
-        </div>
-      </div>
+  <!-- Header -->
+  <header class="hero">
+    <div class="container">
+      <span class="badge">Escolar / Interséries</span>
+      <h1>Copa Recreio 2027</h1>
+      <p>Campeonato Oficial do Grêmio Estudantil — Tabela, Jogos e Resultados em Tempo Real</p>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
-
-    <!-- Notification / Alert Bar -->
-    <div id="toast-message" class="hidden mb-6 p-4 rounded-xl border shadow-sm transition-all duration-300 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <i id="toast-icon" class="fa-solid fa-circle-info text-xl"></i>
-        <span id="toast-text" class="text-sm font-medium"></span>
+  <!-- Barra de Autenticação -->
+  <section class="auth-bar">
+    <div class="container auth-container">
+      <div class="user-badge">
+        <span>Usuário Atual:</span>
+        <span id="currentUserRoleName">Visitante</span>
+        <span id="currentUserRoleBadge" class="role-pill role-visitante">Leitura</span>
       </div>
-      <button onclick="hideToast()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn btn-secondary btn-sm" onclick="openLoginModal()">🔑 Autenticar / Alterar Login</button>
+      </div>
     </div>
+  </section>
 
-    <!-- Admin / Controls Bar for President -->
-    <section id="admin-panel" class="mb-8 bg-white border border-slate-200 rounded-2xl shadow-sm p-5">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4">
-        <div>
-          <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-sliders text-brand-600"></i> Painel de Controle e Gestão
-          </h2>
-          <p class="text-xs text-slate-500">Opções exclusivas para gestão e organização do torneio.</p>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button id="btn-manage-teams" onclick="openTeamsModal()" class="hidden text-xs bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1.5">
-            <i class="fa-solid fa-users-gear"></i> Gerenciar Teams (<span id="teams-count-badge">0</span>)
-          </button>
-          <button id="btn-add-fixture" onclick="openAddFixtureModal()" class="hidden text-xs bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1.5">
-            <i class="fa-solid fa-calendar-plus"></i> Novo Jogo
-          </button>
-          <button onclick="resetData()" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1.5" title="Restaura os dados de exemplo padrão">
-            <i class="fa-solid fa-rotate-left"></i> Resetar Dados
-          </button>
-        </div>
-      </div>
+  <!-- Conteúdo Principal -->
+  <main class="container" style="margin-top: 1.5rem;">
 
-      <!-- Pending Approvals Box (Visible to President) -->
-      <div id="pending-approvals-section" class="hidden">
-        <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-          <i class="fa-solid fa-clock-rotate-left text-amber-500"></i> Solicitções Pendentes de Aprovação (<span id="pending-count">0</span>)
-        </h3>
-        <div id="pending-list" class="space-y-2">
-          <!-- Pending items injected via JS -->
+    <!-- Navegação por Abas -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('classificacao')">📊 Classificação</button>
+      <button class="tab-btn" onclick="switchTab('jogos')">⚽ Jogos & Placares</button>
+      <button class="tab-btn" onclick="switchTab('matamata')">🏆 Mata-Mata</button>
+      <button class="tab-btn" id="tabAdminBtn" style="display:none;" onclick="switchTab('admin')">⚙️ Configurações (Presidente/Superadmin)</button>
+      <button class="tab-btn" id="tabAprovacoesBtn" style="display:none;" onclick="switchTab('aprovacoes')">📝 Aprovações Pendentes <span id="pendingBadge" class="badge" style="background:var(--danger); color:white;">0</span></button>
+      <button class="tab-btn" id="tabSenhasBtn" style="display:none;" onclick="switchTab('senhas')">🔒 Gerenciamento de Senhas</button>
+    </nav>
+
+    <!-- Aba 1: Classificação -->
+    <section id="tab-classificacao" class="tab-content">
+      <div class="card">
+        <h2>Tabela de Pontos Corridos</h2>
+        <p style="color:#64748b; font-size:0.9rem;">Classificação calculada automaticamente: Pontos > Vitórias > Saldo de Gols > Gols Pró.</p>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Pos</th>
+                <th>Time</th>
+                <th>P</th>
+                <th>J</th>
+                <th>V</th>
+                <th>E</th>
+                <th>D</th>
+                <th>GP</th>
+                <th>GC</th>
+                <th>SG</th>
+              </tr>
+            </thead>
+            <tbody id="standingsTableBody">
+              <!-- Renderizado via JS -->
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
-    <!-- Navigation Tabs -->
-    <div class="flex border-b border-slate-200 mb-6 overflow-x-auto custom-scrollbar">
-      <button onclick="switchTab('tab-table')" id="btn-tab-table" class="tab-btn py-3 px-5 border-b-2 font-semibold text-sm whitespace-nowrap border-brand-600 text-brand-700 flex items-center gap-2">
-        <i class="fa-solid fa-table-list"></i> Tabela de Classificação
-      </button>
-      <button onclick="switchTab('tab-matches')" id="btn-tab-matches" class="tab-btn py-3 px-5 border-b-2 font-semibold text-sm whitespace-nowrap border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 flex items-center gap-2">
-        <i class="fa-solid fa-futbol"></i> Jogos & Rodadas
-      </button>
-      <button onclick="switchTab('tab-playoffs')" id="btn-tab-playoffs" class="tab-btn py-3 px-5 border-b-2 font-semibold text-sm whitespace-nowrap border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 flex items-center gap-2">
-        <i class="fa-solid fa-sitemap"></i> Mata-Mata (Playoffs)
-      </button>
-      <button onclick="switchTab('tab-feed')" id="btn-tab-feed" class="tab-btn py-3 px-5 border-b-2 font-semibold text-sm whitespace-nowrap border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 flex items-center gap-2">
-        <i class="fa-solid fa-comments"></i> Feed do Grêmio
-      </button>
-    </div>
-
-    <!-- TAB 1: CLASSIFICATION TABLE -->
-    <div id="tab-table" class="tab-content">
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h3 class="font-bold text-slate-800 text-lg">Pontos Corridos</h3>
-            <p class="text-xs text-slate-500">Classificação atualizada automaticamente a cada placar registrado.</p>
-          </div>
-          <div class="flex items-center gap-3 text-xs text-slate-500 font-medium">
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> G4 - Semifinais</span>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-50 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
-                <th class="py-3 px-4 text-center w-12">Pos</th>
-                <th class="py-3 px-4">Time</th>
-                <th class="py-3 px-3 text-center font-extrabold text-slate-800">P</th>
-                <th class="py-3 px-3 text-center">J</th>
-                <th class="py-3 px-3 text-center">V</th>
-                <th class="py-3 px-3 text-center">E</th>
-                <th class="py-3 px-3 text-center">D</th>
-                <th class="py-3 px-3 text-center">GP</th>
-                <th class="py-3 px-3 text-center">GC</th>
-                <th class="py-3 px-3 text-center font-bold">SG</th>
-              </tr>
-            </thead>
-            <tbody id="standings-table-body" class="divide-y divide-slate-100 text-sm">
-              <!-- Rows dynamically rendered via JavaScript -->
-            </tbody>
-          </table>
-        </div>
-        <div class="p-4 bg-slate-50/50 border-t border-slate-100 text-[11px] text-slate-500 flex flex-wrap justify-between gap-2">
-          <span><strong>Legenda:</strong> P: Pontos | J: Jogos | V: Vitórias | E: Empates | D: Derrotas | GP: Gols Pró | GC: Gols Contra | SG: Saldo de Gols</span>
-          <span>Critérios de Desempate: Pontos > Vitórias > Saldo de Gols > Gols Pró</span>
+    <!-- Aba 2: Jogos e Lançamento de Resultados -->
+    <section id="tab-jogos" class="tab-content" style="display: none;">
+      <div class="card">
+        <h2>Rodadas & Calendário de Jogos</h2>
+        <div id="matchesContainer">
+          <!-- Renderizado via JS -->
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- TAB 2: FIXTURES & MATCHES -->
-    <div id="tab-matches" class="tab-content hidden">
-      <div class="flex flex-col space-y-4 mb-6">
-        <div class="flex items-center justify-between">
-          <h3 class="font-bold text-slate-800 text-lg">Tabela de Jogos</h3>
-          <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium">
-            Janelas ativas permitem edição pela Comissão
-          </span>
-        </div>
-      </div>
-
-      <div id="matches-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Match Cards Rendered via JS -->
-      </div>
-    </div>
-
-    <!-- TAB 3: PLAYOFFS / MATA-MATA -->
-    <div id="tab-playoffs" class="tab-content hidden">
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-        <div class="border-b border-slate-100 pb-4 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-          <div>
-            <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
-              <i class="fa-solid fa-trophy text-amber-500"></i> Fase Final — Mata-Mata
-            </h3>
-            <p class="text-xs text-slate-500">Os 4 melhores classificados da fase de pontos corridos disputam o título.</p>
-          </div>
-          <button onclick="autoPopulatePlayoffs()" id="btn-sync-playoffs" class="hidden text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-semibold transition border border-slate-300">
-            <i class="fa-solid fa-arrows-rotate mr-1"></i> Carregar Top 4 da Tabela
-          </button>
-        </div>
-
-        <!-- Bracket Layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-          
-          <!-- Semifinals -->
-          <div class="space-y-6">
-            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center border-b pb-2">Semifinais</div>
-            
-            <!-- Semi 1 -->
-            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm relative">
-              <span class="text-[10px] uppercase font-bold text-slate-400 block mb-2">Semi 1 (1º x 4º)</span>
-              <div class="space-y-2">
-                <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
-                  <span id="semi1-t1-name" class="font-semibold text-sm">1º Colocado</span>
-                  <input type="number" id="semi1-t1-score" class="w-12 text-center border rounded font-bold p-1" min="0" value="0" disabled>
-                </div>
-                <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
-                  <span id="semi1-t2-name" class="font-semibold text-sm">4º Colocado</span>
-                  <input type="number" id="semi1-t2-score" class="w-12 text-center border rounded font-bold p-1" min="0" value="0" disabled>
-                </div>
-              </div>
-              <button id="btn-save-semi1" onclick="savePlayoffMatch('semi1')" class="hidden mt-3 w-full text-xs bg-brand-600 hover:bg-brand-700 text-white font-semibold py-1.5 rounded transition">
-                Salvar Resultado
-              </button>
-            </div>
-
-            <!-- Semi 2 -->
-            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm relative">
-              <span class="text-[10px] uppercase font-bold text-slate-400 block mb-2">Semi 2 (2º x 3º)</span>
-              <div class="space-y-2">
-                <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
-                  <span id="semi2-t1-name" class="font-semibold text-sm">2º Colocado</span>
-                  <input type="number" id="semi2-t1-score" class="w-12 text-center border rounded font-bold p-1" min="0" value="0" disabled>
-                </div>
-                <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
-                  <span id="semi2-t2-name" class="font-semibold text-sm">3º Colocado</span>
-                  <input type="number" id="semi2-t2-score" class="w-12 text-center border rounded font-bold p-1" min="0" value="0" disabled>
-                </div>
-              </div>
-              <button id="btn-save-semi2" onclick="savePlayoffMatch('semi2')" class="hidden mt-3 w-full text-xs bg-brand-600 hover:bg-brand-700 text-white font-semibold py-1.5 rounded transition">
-                Salvar Resultado
-              </button>
-            </div>
-          </div>
-
-          <!-- Connector visual (hidden on mobile) -->
-          <div class="hidden lg:flex flex-col items-center justify-center text-slate-300">
-            <i class="fa-solid fa-chevron-right text-3xl"></i>
-          </div>
-
-          <!-- Final -->
-          <div class="space-y-4">
-            <div class="text-xs font-bold text-amber-600 uppercase tracking-wider text-center border-b pb-2">Grande Final</div>
-            
-            <div class="bg-gradient-to-b from-amber-50 to-orange-50 rounded-2xl p-5 border-2 border-amber-300 shadow-md relative">
-              <div class="text-center mb-3">
-                <i class="fa-solid fa-crown text-amber-500 text-2xl"></i>
-                <span class="text-xs font-extrabold uppercase text-amber-800 block">Disputa de Campeão</span>
-              </div>
-              <div class="space-y-2">
-                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-200">
-                  <span id="final-t1-name" class="font-bold text-slate-800 text-sm">Vencedor Semi 1</span>
-                  <input type="number" id="final-t1-score" class="w-12 text-center border rounded font-bold p-1" min="0" value="0" disabled>
-                </div>
-                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-200">
-                  <span id="final-t2-name" class="font-bold text-slate-800 text-sm">Vencedor Semi 2</span>
-                  <input type="number" id="final-t2-score" class="w-12 text-center border rounded font-bold p-1" min="0" value="0" disabled>
-                </div>
-              </div>
-              <button id="btn-save-final" onclick="savePlayoffMatch('final')" class="hidden mt-4 w-full text-xs bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg transition shadow">
-                Salvar e Definir Campeão
-              </button>
-
-              <div id="champion-display" class="hidden mt-4 p-3 bg-amber-400/20 border border-amber-400 rounded-xl text-center">
-                <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-900 block">🏆 Campeão 2027 🏆</span>
-                <span id="champion-name" class="text-lg font-black text-amber-900 block mt-0.5">---</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: FEED & COMMENTS -->
-    <div id="tab-feed" class="tab-content hidden">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Aba 3: Mata-Mata -->
+    <section id="tab-matamata" class="tab-content" style="display: none;">
+      <div class="card">
+        <h2>Fase Final (Playoffs)</h2>
+        <p style="color:#64748b; font-size:0.9rem;">Cruzamento das 4 melhores equipes da fase de pontos corridos.</p>
         
-        <!-- Main Feed (2 cols) -->
-        <div class="lg:col-span-2 space-y-4">
-          
-          <!-- Post Creation Box -->
-          <div id="post-box" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-            <h4 class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Publicar Atualização ou Notícia</h4>
-            <textarea id="feed-input" rows="3" class="w-full text-sm border border-slate-200 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Escreva um comunicado ou atualização sobre a Copa Recreio..."></textarea>
-            <div class="mt-3 flex items-center justify-between">
-              <span id="feed-post-notice" class="text-xs text-slate-400">Suas postagens passam por aprovação prévia.</span>
-              <button onclick="submitFeedPost()" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition">
-                Enviar Publicação
-              </button>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div class="match-card">
+            <div class="match-header"><strong>Semifinal 1</strong></div>
+            <div class="match-body">
+              <span class="team-name" id="semi1-t1">1º Colocado</span>
+              <input type="number" class="score-input" id="semi1-s1" disabled>
+              <span>x</span>
+              <input type="number" class="score-input" id="semi1-s2" disabled>
+              <span class="team-name right" id="semi1-t2">4º Colocado</span>
             </div>
           </div>
 
-          <!-- Feed Posts List -->
-          <div id="feed-posts-list" class="space-y-4">
-            <!-- Posts rendered via JS -->
+          <div class="match-card">
+            <div class="match-header"><strong>Semifinal 2</strong></div>
+            <div class="match-body">
+              <span class="team-name" id="semi2-t1">2º Colocado</span>
+              <input type="number" class="score-input" id="semi2-s1" disabled>
+              <span>x</span>
+              <input type="number" class="score-input" id="semi2-s2" disabled>
+              <span class="team-name right" id="semi2-t2">3º Colocado</span>
+            </div>
           </div>
         </div>
 
-        <!-- Sidebar Info -->
-        <div class="space-y-4">
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-            <h4 class="font-bold text-slate-800 text-sm mb-2"><i class="fa-solid fa-bullhorn text-brand-600 mr-1.5"></i> Regras da Copa Recreio</h4>
-            <ul class="text-xs text-slate-600 space-y-2 list-disc pl-4">
-              <li>Cada tempo de jogo possui 20 minutos corridos.</li>
-              <li>Atraso de mais de 10 minutos resulta em W.O. (3x0).</li>
-              <li>Cartões amarelos acumulam na fase de grupos.</li>
-              <li>Alterações de resultado devem ser efetuadas estritamente dentro da janela temporária estipulada pela Presidência.</li>
-            </ul>
+        <div class="match-card" style="margin-top: 1.5rem; border-color: var(--accent);">
+          <div class="match-header" style="color: var(--accent);"><strong>🥇 Grande Final</strong></div>
+          <div class="match-body">
+            <span class="team-name" id="final-t1">Vencedor Semi 1</span>
+            <input type="number" class="score-input" id="final-s1" disabled>
+            <span>x</span>
+            <input type="number" class="score-input" id="final-s2" disabled>
+            <span class="team-name right" id="final-t2">Vencedor Semi 2</span>
           </div>
         </div>
-
       </div>
-    </div>
+    </section>
+
+    <!-- Aba 4: Configurações Admin (Presidente & Superadmin) -->
+    <section id="tab-admin" class="tab-content" style="display: none;">
+      <div class="card">
+        <h2>Gerenciamento de Times e Jogos</h2>
+        
+        <div class="form-group">
+          <label>Adicionar Novo Time:</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="newTeamName" class="form-control" placeholder="Nome do time (ex: 3º Ano A)">
+            <button class="btn btn-primary" onclick="addTeam()">Adicionar</button>
+          </div>
+        </div>
+
+        <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+        <h3>Criar Novo Jogo & Estipular Janela de Edição</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;">
+          <div class="form-group">
+            <label>Time Mandante:</label>
+            <select id="matchTeamA" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>Time Visitante:</label>
+            <select id="matchTeamB" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>Início da Janela (Permissão):</label>
+            <input type="datetime-local" id="windowStart" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Fim da Janela (Permissão):</label>
+            <input type="datetime-local" id="windowEnd" class="form-control">
+          </div>
+        </div>
+        <button class="btn btn-success" onclick="createMatch()">Cadastrar Partida</button>
+      </div>
+    </section>
+
+    <!-- Aba 5: Aprovações Pendentes -->
+    <section id="tab-aprovacoes" class="tab-content" style="display: none;">
+      <div class="card">
+        <h2>Solicitações de Edição / Resultados Enviados por Membros</h2>
+        <p style="color:#64748b; font-size:0.9rem;">Resultados informados por membros comuns do Grêmio aguardando validação da Presidente ou do Superadmin.</p>
+        <div id="pendingApprovalsList">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Aba 6: Gerenciamento de Senhas (Exclusivo Superadmin) -->
+    <section id="tab-senhas" class="tab-content" style="display: none;">
+      <div class="card">
+        <h2>Painel Exclusivo do Superadmin: Alteração de Senhas</h2>
+        <div class="alert alert-info">
+          Como Superadmin, você pode alterar as senhas de acesso de qualquer perfil administrativo ou do Grêmio.
+        </div>
+
+        <div class="form-group">
+          <label>Selecione o Usuário:</label>
+          <select id="changePasswordUserSelect" class="form-control">
+            <option value="superadmin">Superadmin (Seu perfil)</option>
+            <option value="presidente">Presidente do Grêmio</option>
+            <option value="comissao">Comissão de Esportes</option>
+            <option value="membro">Membro do Grêmio</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Nova Senha:</label>
+          <input type="password" id="newPasswordInput" class="form-control" placeholder="Digite a nova senha">
+        </div>
+
+        <button class="btn btn-primary" onclick="changeUserPassword()">Atualizar Senha</button>
+      </div>
+    </section>
 
   </main>
 
-  <!-- Notice Section Footer -->
-  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-slate-600 text-xs">
-    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+  <!-- Modal de Login / Autenticação com Senha -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h3>Autenticação do Sistema</h3>
+      <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">Selecione o seu perfil e digite a senha correspondente para liberar suas permissões.</p>
+
+      <div class="form-group">
+        <label>Perfil de Acesso:</label>
+        <select id="loginRoleSelect" class="form-control" onchange="togglePasswordRequirement()">
+          <option value="visitante">Visitante / Aluno (Apenas Leitura)</option>
+          <option value="membro">Membro do Grêmio Estudantil</option>
+          <option value="comissao">Comissão de Esportes</option>
+          <option value="presidente">Presidente do Grêmio Estudantil</option>
+          <option value="superadmin">Superadmin (Criador / Dev)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="passwordGroup" style="display: none;">
+        <label>Senha:</label>
+        <input type="password" id="loginPasswordInput" class="form-control" placeholder="Digite sua senha">
+      </div>
+
+      <div id="loginError" class="alert alert-warning" style="display:none; color:var(--danger); background:#fee2e2;">
+        Senha incorreta!
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+        <button class="btn btn-secondary" onclick="closeLoginModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="performLogin()">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container" style="padding: 2rem 0; text-align: center; color: #64748b; font-size: 0.85rem;">
       <p>© 2027 Peneiras RS — Organização da Copa Recreio pelo Grêmio Estudantil.</p>
-      <p class="text-slate-400">Desenvolvido para gestão rápida e transparente das atividades esportivas escolares.</p>
+      <p>Desenvolvido por Diego Eduardo Tomasi.</p>
     </div>
   </footer>
 
-  <!-- MODALS -->
-
-  <!-- Modal 1: Manage Teams -->
-  <div id="modal-teams" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
-      <div class="flex items-center justify-between mb-4 border-b pb-3">
-        <h3 class="font-bold text-slate-800 text-base">Gerenciar Times Participantes</h3>
-        <button onclick="closeTeamsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="space-y-4">
-        <div class="flex gap-2">
-          <input type="text" id="new-team-name" class="flex-grow border border-slate-300 rounded-lg text-sm px-3 py-2 focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Nome do novo time">
-          <button onclick="addTeam()" class="bg-brand-600 text-white font-semibold text-xs px-4 py-2 rounded-lg hover:bg-brand-700 transition">Adicionar</button>
-        </div>
-        <div class="max-h-60 overflow-y-auto custom-scrollbar border rounded-lg divide-y" id="teams-list-manage">
-          <!-- List rendered JS -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 2: Edit Match Score & Window -->
-  <div id="modal-edit-match" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100">
-      <div class="flex items-center justify-between mb-4 border-b pb-3">
-        <h3 class="font-bold text-slate-800 text-base" id="modal-match-title">Editar Jogo</h3>
-        <button onclick="closeEditMatchModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <input type="hidden" id="edit-match-id">
-
-      <div class="space-y-5">
-        <!-- Score Section -->
-        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-          <label class="block text-xs font-bold text-slate-600 uppercase mb-3 text-center">Placar do Confronto</label>
-          <div class="flex items-center justify-center space-x-4">
-            <div class="text-center flex-1">
-              <span id="modal-team1-name" class="block font-semibold text-xs text-slate-700 mb-1 truncate">Time 1</span>
-              <input type="number" id="modal-team1-score" min="0" class="w-16 text-center text-lg font-bold border border-slate-300 rounded-lg py-1.5 focus:ring-2 focus:ring-brand-500">
-            </div>
-            <span class="text-slate-400 font-bold text-xl">X</span>
-            <div class="text-center flex-1">
-              <span id="modal-team2-name" class="block font-semibold text-xs text-slate-700 mb-1 truncate">Time 2</span>
-              <input type="number" id="modal-team2-score" min="0" class="w-16 text-center text-lg font-bold border border-slate-300 rounded-lg py-1.5 focus:ring-2 focus:ring-brand-500">
-            </div>
-          </div>
-        </div>
-
-        <!-- Window Controls (Only for President or display) -->
-        <div id="modal-window-section" class="space-y-3">
-          <div class="flex items-center justify-between">
-            <label class="text-xs font-bold text-slate-700 uppercase">Janela de Edição da Comissão</label>
-            <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-medium">Restrição Temporária</span>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-[11px] text-slate-500 mb-1">Início da Janela</label>
-              <input type="datetime-local" id="modal-window-start" class="w-full border border-slate-300 rounded-lg text-xs p-2 focus:ring-2 focus:ring-brand-500">
-            </div>
-            <div>
-              <label class="block text-[11px] text-slate-500 mb-1">Fim da Janela</label>
-              <input type="datetime-local" id="modal-window-end" class="w-full border border-slate-300 rounded-lg text-xs p-2 focus:ring-2 focus:ring-brand-500">
-            </div>
-          </div>
-        </div>
-
-        <div id="modal-reason-container" class="hidden">
-          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Justificativa da Edição</label>
-          <input type="text" id="modal-edit-reason" class="w-full border border-slate-300 rounded-lg text-xs p-2" placeholder="Motivo para envio à aprovação da diretoria...">
-        </div>
-
-        <div class="flex justify-end space-x-2 pt-2 border-t">
-          <button onclick="closeEditMatchModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
-          <button onclick="saveMatchEdit()" class="px-4 py-2 text-xs font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-lg shadow transition">Salvar Alterações</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal 3: Add New Fixture -->
-  <div id="modal-add-fixture" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
-      <div class="flex items-center justify-between mb-4 border-b pb-3">
-        <h3 class="font-bold text-slate-800 text-base">Cadastrar Novo Jogo</h3>
-        <button onclick="closeAddFixtureModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Mandante (Time 1)</label>
-          <select id="new-fixture-t1" class="w-full border border-slate-300 rounded-lg text-xs p-2"></select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Visitante (Time 2)</label>
-          <select id="new-fixture-t2" class="w-full border border-slate-300 rounded-lg text-xs p-2"></select>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Rodada / Fase</label>
-          <input type="text" id="new-fixture-round" class="w-full border border-slate-300 rounded-lg text-xs p-2" placeholder="Ex: Rodada 1 ou Fase de Grupos">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Janela Início</label>
-            <input type="datetime-local" id="new-fixture-start" class="w-full border border-slate-300 rounded-lg text-xs p-2">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Janela Fim</label>
-            <input type="datetime-local" id="new-fixture-end" class="w-full border border-slate-300 rounded-lg text-xs p-2">
-          </div>
-        </div>
-        <div class="flex justify-end space-x-2 pt-3 border-t">
-          <button onclick="closeAddFixtureModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
-          <button onclick="createNewFixture()" class="px-4 py-2 text-xs font-bold bg-brand-600 text-white rounded-lg hover:bg-brand-700">Cadastrar Jogo</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // --- APP STATE & INITIAL DATA ---
-    const STORAGE_KEY = 'copa_recreio_2027_data';
-
-    const DEFAULT_TEAMS = [
-      { id: 't1', name: 'Grêmio Escolar' },
-      { id: 't2', name: 'Inter Recreio' },
-      { id: 't3', name: 'Juventude Estudantil' },
-      { id: 't4', name: 'Caxias do Terceirão' },
-      { id: 't5', name: 'Brasil de Pelotas JR' },
-      { id: 't6', name: 'Ypiranga da Manhã' }
-    ];
-
-    // Helper to format ISO datetimes for window testing
-    function getOffsetDate(daysOffset, hour) {
-      const d = new Date(2027, 7, 27); // August 27, 2027
-      d.setDate(d.getDate() + daysOffset);
-      d.setHours(hour, 0, 0, 0);
-      return d.toISOString().slice(0, 16);
-    }
-
-    const DEFAULT_MATCHES = [
-      {
-        id: 'm1',
-        round: 'Rodada 1',
-        team1Id: 't1',
-        team2Id: 't2',
-        score1: 3,
-        score2: 1,
-        played: true,
-        windowStart: '2027-08-27T12:00',
-        windowEnd: '2027-08-28T12:00'
-      },
-      {
-        id: 'm2',
-        round: 'Rodada 1',
-        team1Id: 't3',
-        team2Id: 't4',
-        score1: 2,
-        score2: 2,
-        played: true,
-        windowStart: '2027-08-27T12:00',
-        windowEnd: '2027-08-28T12:00'
-      },
-      {
-        id: 'm3',
-        round: 'Rodada 2',
-        team1Id: 't1',
-        team2Id: 't3',
-        score1: 0,
-        score2: 0,
-        played: false,
-        // Set an open window relative to current time for demo purposes
-        windowStart: new Date(Date.now() - 3600000).toISOString().slice(0, 16),
-        windowEnd: new Date(Date.now() + 86400000).toISOString().slice(0, 16)
-      },
-      {
-        id: 'm4',
-        round: 'Rodada 2',
-        team1Id: 't2',
-        team2Id: 't5',
-        score1: 0,
-        score2: 0,
-        played: false,
-        windowStart: '2027-09-01T10:00',
-        windowEnd: '2027-09-01T18:00'
-      }
-    ];
-
-    const DEFAULT_PLAYOFFS = {
-      semi1: { team1: null, team2: null, score1: 0, score2: 0, played: false },
-      semi2: { team1: null, team2: null, score1: 0, score2: 0, played: false },
-      final: { team1: null, team2: null, score1: 0, score2: 0, played: false, champion: null }
+    // --- ESTADO INICIAL E PERSISTÊNCIA NO LOCALSTORAGE ---
+    const DEFAULT_PASSWORDS = {
+      superadmin: "admin123",
+      presidente: "presi2027",
+      comissao: "esportes123",
+      membro: "gremio123"
     };
 
-    const DEFAULT_POSTS = [
-      {
-        id: 'p1',
-        author: 'Presidente do Grêmio',
-        text: 'Sejam bem-vindos à Copa Recreio 2027! Lembramos que as janelas de alteração dos placares para a Comissão de Esportes serão abertas logo após o apito final de cada partida.',
-        date: '2027-08-20 14:00',
-        approved: true
-      },
-      {
-        id: 'p2',
-        author: 'Comissão de Esportes',
-        text: 'Grande vitória do Grêmio Escolar sobre o Inter Recreio na estreia! Tabela já atualizada.',
-        date: '2027-08-27 15:30',
-        approved: true
-      }
-    ];
-
-    let appState = {
-      role: 'president', // president | sports_comm | gremio_member | visitor
-      teams: [],
-      matches: [],
-      playoffs: {},
-      posts: [],
-      pendingEdits: [] // Stores pending score changes or posts from regular members
-    };
-
-    // --- INITIALIZATION ---
-    window.onload = function() {
-      loadState();
-      renderAll();
-    };
-
-    function loadState() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          appState = JSON.parse(saved);
-        } catch (e) {
-          console.error("Error loading state", e);
-          resetData();
+    let state = {
+      currentUserRole: 'visitante', // 'visitante', 'membro', 'comissao', 'presidente', 'superadmin'
+      passwords: JSON.parse(localStorage.getItem('copa_passwords')) || DEFAULT_PASSWORDS,
+      teams: JSON.parse(localStorage.getItem('copa_teams')) || [
+        { id: 1, name: '3º Ano A' },
+        { id: 2, name: '2º Ano B' },
+        { id: 3, name: '1º Ano C' },
+        { id: 4, name: '9º Ano A' }
+      ],
+      matches: JSON.parse(localStorage.getItem('copa_matches')) || [
+        {
+          id: 101,
+          teamAId: 1,
+          teamBId: 2,
+          scoreA: 3,
+          scoreB: 1,
+          status: 'finished',
+          windowStart: '2027-08-27T12:00',
+          windowEnd: '2027-08-28T12:00'
+        },
+        {
+          id: 102,
+          teamAId: 3,
+          teamBId: 4,
+          scoreA: null,
+          scoreB: null,
+          status: 'scheduled',
+          windowStart: new Date(Date.now() - 3600000).toISOString().slice(0,16), // Janela Aberta Agora para testes
+          windowEnd: new Date(Date.now() + 86400000).toISOString().slice(0,16)
         }
+      ],
+      pendingApprovals: JSON.parse(localStorage.getItem('copa_pending')) || []
+    };
+
+    function saveData() {
+      localStorage.setItem('copa_teams', JSON.stringify(state.teams));
+      localStorage.setItem('copa_matches', JSON.stringify(state.matches));
+      localStorage.setItem('copa_pending', JSON.stringify(state.pendingApprovals));
+      localStorage.setItem('copa_passwords', JSON.stringify(state.passwords));
+    }
+
+    // --- SISTEMA DE AUTENTICAÇÃO ---
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.add('active');
+      togglePasswordRequirement();
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('active');
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginPasswordInput').value = '';
+    }
+
+    function togglePasswordRequirement() {
+      const role = document.getElementById('loginRoleSelect').value;
+      const pwdGroup = document.getElementById('passwordGroup');
+      if (role === 'visitante') {
+        pwdGroup.style.display = 'none';
       } else {
-        resetData();
+        pwdGroup.style.display = 'block';
       }
     }
 
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-      renderAll();
-    }
+    function performLogin() {
+      const role = document.getElementById('loginRoleSelect').value;
+      const pwd = document.getElementById('loginPasswordInput').value;
 
-    function resetData() {
-      appState.teams = JSON.parse(JSON.stringify(DEFAULT_TEAMS));
-      appState.matches = JSON.parse(JSON.stringify(DEFAULT_MATCHES));
-      appState.playoffs = JSON.parse(JSON.stringify(DEFAULT_PLAYOFFS));
-      appState.posts = JSON.parse(JSON.stringify(DEFAULT_POSTS));
-      appState.pendingEdits = [];
-      saveState();
-      showToast('Dados restaurados para o padrão com sucesso!', 'success');
-    }
-
-    // --- ROLE MANAGEMENT ---
-    function switchRole(newRole) {
-      appState.role = newRole;
-      const descMap = {
-        'president': 'Acesso total: gerencie times, estipule janelas de tempo, edite qualquer jogo e aprove solicitações.',
-        'sports_comm': 'Comissão de Esportes: altera e lança placares APENAS durante a janela de tempo autorizada.',
-        'gremio_member': 'Membro do Grêmio: envia alterações ou comentários que passam por aprovação da diretoria.',
-        'visitor': 'Visitante: apenas visualização de tabelas, jogos e notícias aprovadas.'
-      };
-      document.getElementById('role-description').innerText = descMap[newRole];
-      
-      const badgeMap = {
-        'president': 'Presidente',
-        'sports_comm': 'Comissão Esportes',
-        'gremio_member': 'Membro Grêmio',
-        'visitor': 'Visitante'
-      };
-      document.getElementById('role-badge-display').innerText = badgeMap[newRole];
-
-      renderAll();
-      showToast(`Perfil alterado para: ${badgeMap[newRole]}`, 'info');
-    }
-
-    // --- UI RENDERERS ---
-    function renderAll() {
-      renderAdminBar();
-      renderStandings();
-      renderMatches();
-      renderPlayoffs();
-      renderFeed();
-    }
-
-    function renderAdminBar() {
-      const adminSection = document.getElementById('admin-panel');
-      const btnTeams = document.getElementById('btn-manage-teams');
-      const btnFixture = document.getElementById('btn-add-fixture');
-      const pendingSection = document.getElementById('pending-approvals-section');
-      const btnSyncPlayoffs = document.getElementById('btn-sync-playoffs');
-
-      document.getElementById('teams-count-badge').innerText = appState.teams.length;
-
-      // President Controls
-      if (appState.role === 'president') {
-        adminSection.classList.remove('hidden');
-        btnTeams.classList.remove('hidden');
-        btnFixture.classList.remove('hidden');
-        pendingSection.classList.remove('hidden');
-        btnSyncPlayoffs.classList.remove('hidden');
-
-        // Render Pending List
-        const pendingList = document.getElementById('pending-list');
-        document.getElementById('pending-count').innerText = appState.pendingEdits.length;
-
-        if (appState.pendingEdits.length === 0) {
-          pendingList.innerHTML = `<div class="text-xs text-slate-400 italic">Nenhuma solicitação pendente no momento.</div>`;
-        } else {
-          pendingList.innerHTML = appState.pendingEdits.map((item, idx) => `
-            <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-xs">
-              <div>
-                <span class="font-bold text-slate-700">${item.type === 'score' ? 'Placar' : 'Postagem'}</span>
-                <span class="text-slate-500">por ${item.author} — ${item.details}</span>
-              </div>
-              <div class="flex space-x-1">
-                <button onclick="approvePending(${idx})" class="bg-emerald-600 text-white px-2.5 py-1 rounded hover:bg-emerald-700 font-bold">Aprovar</button>
-                <button onclick="rejectPending(${idx})" class="bg-red-600 text-white px-2.5 py-1 rounded hover:bg-red-700 font-bold">Rejeitar</button>
-              </div>
-            </div>
-          `).join('');
+      if (role !== 'visitante') {
+        if (pwd !== state.passwords[role]) {
+          document.getElementById('loginError').style.display = 'block';
+          return;
         }
-      } else {
-        btnTeams.classList.add('hidden');
-        btnFixture.classList.add('hidden');
-        pendingSection.classList.add('hidden');
-        btnSyncPlayoffs.classList.add('hidden');
       }
+
+      state.currentUserRole = role;
+      closeLoginModal();
+      updateUIForRole();
+      renderAll();
     }
 
-    // Helper to calculate standings
+    function updateUIForRole() {
+      const roleNames = {
+        visitante: 'Visitante (Aluno)',
+        membro: 'Membro do Grêmio',
+        comissao: 'Comissão de Esportes',
+        presidente: 'Presidente do Grêmio',
+        superadmin: 'Superadmin (Diego)'
+      };
+
+      const roleBadges = {
+        visitante: 'role-visitante',
+        membro: 'role-membro',
+        comissao: 'role-comissao',
+        presidente: 'role-presidente',
+        superadmin: 'role-superadmin'
+      };
+
+      document.getElementById('currentUserRoleName').textContent = roleNames[state.currentUserRole];
+      const badgeElem = document.getElementById('currentUserRoleBadge');
+      badgeElem.textContent = state.currentUserRole;
+      badgeElem.className = `role-pill ${roleBadges[state.currentUserRole]}`;
+
+      // Visibilidade de Abas baseada nas permissões
+      const isPresiOrAdmin = (state.currentUserRole === 'presidente' || state.currentUserRole === 'superadmin');
+      document.getElementById('tabAdminBtn').style.display = isPresiOrAdmin ? 'inline-block' : 'none';
+      document.getElementById('tabAprovacoesBtn').style.display = isPresiOrAdmin ? 'inline-block' : 'none';
+      document.getElementById('tabSenhasBtn').style.display = (state.currentUserRole === 'superadmin') ? 'inline-block' : 'none';
+
+      document.getElementById('pendingBadge').textContent = state.pendingApprovals.length;
+    }
+
+    // --- GERENCIAMENTO DE SENHAS (SUPERADMIN) ---
+    function changeUserPassword() {
+      if (state.currentUserRole !== 'superadmin') return;
+
+      const targetUser = document.getElementById('changePasswordUserSelect').value;
+      const newPwd = document.getElementById('newPasswordInput').value;
+
+      if (!newPwd || newPwd.trim() === '') {
+        alert('Por favor, informe uma senha válida!');
+        return;
+      }
+
+      state.passwords[targetUser] = newPwd;
+      saveData();
+      alert(`Senha do usuário [${targetUser}] atualizada com sucesso!`);
+      document.getElementById('newPasswordInput').value = '';
+    }
+
+    // --- NAVEGAÇÃO DE ABAS ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+
+      document.getElementById(`tab-${tabId}`).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
+    // --- REGRA DE NEGÓCIO: VERIFICAÇÃO DE JANELA DE TEMPO ---
+    function isWindowOpen(match) {
+      if (state.currentUserRole === 'presidente' || state.currentUserRole === 'superadmin') {
+        return true; // Presidente e Superadmin ignoram trava de tempo
+      }
+      if (!match.windowStart || !match.windowEnd) return true;
+
+      const now = new Date();
+      const start = new Date(match.windowStart);
+      const end = new Date(match.windowEnd);
+
+      return now >= start && now <= end;
+    }
+
+    // --- CÁLCULO DA TABELA DE CLASSIFICAÇÃO ---
     function calculateStandings() {
       const stats = {};
-      appState.teams.forEach(t => {
-        stats[t.id] = { id: t.id, name: t.name, P: 0, J: 0, V: 0, E: 0, D: 0, GP: 0, GC: 0, SG: 0 };
+      state.teams.forEach(team => {
+        stats[team.id] = { id: team.id, name: team.name, P: 0, J: 0, V: 0, E: 0, D: 0, GP: 0, GC: 0, SG: 0 };
       });
 
-      appState.matches.forEach(m => {
-        if (m.played && stats[m.team1Id] && stats[m.team2Id]) {
-          const t1 = stats[m.team1Id];
-          const t2 = stats[m.team2Id];
+      state.matches.forEach(m => {
+        if (m.scoreA !== null && m.scoreB !== null) {
+          const tA = stats[m.teamAId];
+          const tB = stats[m.teamBId];
 
-          t1.J += 1;
-          t2.J += 1;
-          t1.GP += m.score1;
-          t1.GC += m.score2;
-          t2.GP += m.score2;
-          t2.GC += m.score1;
+          if (tA && tB) {
+            tA.J++; tB.J++;
+            tA.GP += m.scoreA; tA.GC += m.scoreB;
+            tB.GP += m.scoreB; tB.GC += m.scoreA;
 
-          if (m.score1 > m.score2) {
-            t1.V += 1;
-            t1.P += 3;
-            t2.D += 1;
-          } else if (m.score2 > m.score1) {
-            t2.V += 1;
-            t2.P += 3;
-            t1.D += 1;
-          } else {
-            t1.E += 1;
-            t2.E += 1;
-            t1.P += 1;
-            t2.P += 1;
+            if (m.scoreA > m.scoreB) {
+              tA.V++; tA.P += 3;
+              tB.D++;
+            } else if (m.scoreB > m.scoreA) {
+              tB.V++; tB.P += 3;
+              tA.D++;
+            } else {
+              tA.E++; tA.P += 1;
+              tB.E++; tB.P += 1;
+            }
+
+            tA.SG = tA.GP - tA.GC;
+            tB.SG = tB.GP - tB.GC;
           }
         }
       });
 
-      Object.values(stats).forEach(s => {
-        s.SG = s.GP - s.GC;
-      });
-
-      // Sort by Points > Wins > Goal Difference > Goals For
       return Object.values(stats).sort((a, b) => {
         if (b.P !== a.P) return b.P - a.P;
         if (b.V !== a.V) return b.V - a.V;
@@ -748,494 +720,254 @@
       });
     }
 
+    // --- RENDERIZADORES ---
     function renderStandings() {
       const standings = calculateStandings();
-      const tbody = document.getElementById('standings-table-body');
+      const tbody = document.getElementById('standingsTableBody');
+      tbody.innerHTML = '';
 
-      tbody.innerHTML = standings.map((t, index) => {
-        const isTop4 = index < 4;
-        const posColor = isTop4 ? 'bg-emerald-500 text-white font-bold' : 'bg-slate-200 text-slate-600';
-        return `
-          <tr class="hover:bg-slate-50/80 transition">
-            <td class="py-3 px-4 text-center">
-              <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs ${posColor}">${index + 1}</span>
-            </td>
-            <td class="py-3 px-4 font-semibold text-slate-800">${t.name}</td>
-            <td class="py-3 px-3 text-center font-black text-brand-700 bg-brand-50/30">${t.P}</td>
-            <td class="py-3 px-3 text-center text-slate-600">${t.J}</td>
-            <td class="py-3 px-3 text-center text-slate-600">${t.V}</td>
-            <td class="py-3 px-3 text-center text-slate-600">${t.E}</td>
-            <td class="py-3 px-3 text-center text-slate-600">${t.D}</td>
-            <td class="py-3 px-3 text-center text-slate-600">${t.GP}</td>
-            <td class="py-3 px-3 text-center text-slate-600">${t.GC}</td>
-            <td class="py-3 px-3 text-center font-bold ${t.SG > 0 ? 'text-emerald-600' : t.SG < 0 ? 'text-red-500' : 'text-slate-500'}">${t.SG > 0 ? '+' + t.SG : t.SG}</td>
+      standings.forEach((st, idx) => {
+        tbody.innerHTML += `
+          <tr class="team-row">
+            <td><strong>${idx + 1}º</strong></td>
+            <td><strong>${st.name}</strong></td>
+            <td><strong>${st.P}</strong></td>
+            <td>${st.J}</td>
+            <td>${st.V}</td>
+            <td>${st.E}</td>
+            <td>${st.D}</td>
+            <td>${st.GP}</td>
+            <td>${st.GC}</td>
+            <td>${st.SG}</td>
           </tr>
         `;
-      }).join('');
-    }
+      });
 
-    // Helper: Check if current time is inside match edit window
-    function isWindowOpen(match) {
-      if (!match.windowStart || !match.windowEnd) return false;
-      const now = new Date();
-      const start = new Date(match.windowStart);
-      const end = new Date(match.windowEnd);
-      return now >= start && now <= end;
+      renderPlayoffs(standings);
     }
 
     function renderMatches() {
-      const container = document.getElementById('matches-container');
-      const teamsMap = {};
-      appState.teams.forEach(t => teamsMap[t.id] = t.name);
+      const container = document.getElementById('matchesContainer');
+      container.innerHTML = '';
 
-      if (appState.matches.length === 0) {
-        container.innerHTML = `<div class="col-span-2 text-center py-8 text-slate-400">Nenhum jogo cadastrado.</div>`;
+      if (state.matches.length === 0) {
+        container.innerHTML = '<p style="color:#64748b;">Nenhum jogo cadastrado ainda.</p>';
         return;
       }
 
-      container.innerHTML = appState.matches.map(m => {
-        const team1 = teamsMap[m.team1Id] || 'Time Removido';
-        const team2 = teamsMap[m.team2Id] || 'Time Removido';
+      state.matches.forEach(m => {
+        const teamA = state.teams.find(t => t.id === m.teamAId);
+        const teamB = state.teams.find(t => t.id === m.teamBId);
         const open = isWindowOpen(m);
 
-        let windowBadge = '';
-        if (open) {
-          windowBadge = `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock-open mr-1"></i>Janela Aberta</span>`;
-        } else {
-          windowBadge = `<span class="bg-slate-100 text-slate-600 border border-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock mr-1"></i>Janela Fechada</span>`;
-        }
+        const canEditDirectly = (state.currentUserRole === 'presidente' || state.currentUserRole === 'superadmin') ||
+                                (state.currentUserRole === 'comissao' && open);
+        const canSubmitForApproval = (state.currentUserRole === 'membro');
 
-        const canEdit = appState.role === 'president' || (appState.role === 'sports_comm' && open) || appState.role === 'gremio_member';
+        const windowBadge = open 
+          ? `<span class="window-status window-open">🔓 Janela Aberta</span>`
+          : `<span class="window-status window-closed">🔒 Janela Fechada</span>`;
 
-        return `
-          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow transition flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between text-xs text-slate-400 font-medium mb-3">
-                <span>${m.round}</span>
-                ${windowBadge}
-              </div>
-
-              <div class="flex items-center justify-between my-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
-                <div class="flex-1 text-right font-semibold text-sm text-slate-800 pr-2 truncate">${team1}</div>
-                <div class="flex items-center space-x-2 px-2">
-                  <span class="text-xl font-black ${m.played ? 'text-slate-900' : 'text-slate-300'}">${m.played ? m.score1 : '-'}</span>
-                  <span class="text-xs text-slate-400 font-bold">x</span>
-                  <span class="text-xl font-black ${m.played ? 'text-slate-900' : 'text-slate-300'}">${m.played ? m.score2 : '-'}</span>
-                </div>
-                <div class="flex-1 text-left font-semibold text-sm text-slate-800 pl-2 truncate">${team2}</div>
-              </div>
-
-              <div class="text-[10px] text-slate-400 mt-2 flex items-center justify-between">
-                <span><i class="fa-regular fa-clock mr-1"></i>Janela: ${formatDateTime(m.windowStart)} até ${formatDateTime(m.windowEnd)}</span>
-              </div>
+        container.innerHTML += `
+          <div class="match-card">
+            <div class="match-header">
+              <span>Jogo #${m.id} | Permitido entre: ${m.windowStart ? m.windowStart.replace('T', ' ') : 'S/D'} até ${m.windowEnd ? m.windowEnd.replace('T', ' ') : 'S/D'}</span>
+              ${windowBadge}
             </div>
+            <div class="match-body">
+              <span class="team-name">${teamA ? teamA.name : 'Indefinido'}</span>
+              
+              <input type="number" id="scoreA_${m.id}" class="score-input" 
+                value="${m.scoreA !== null ? m.scoreA : ''}" 
+                ${!canEditDirectly && !canSubmitForApproval ? 'disabled' : ''}>
+              
+              <span>x</span>
+              
+              <input type="number" id="scoreB_${m.id}" class="score-input" 
+                value="${m.scoreB !== null ? m.scoreB : ''}" 
+                ${!canEditDirectly && !canSubmitForApproval ? 'disabled' : ''}>
+              
+              <span class="team-name right">${teamB ? teamB.name : 'Indefinido'}</span>
 
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-              <span class="text-[11px] font-semibold ${m.played ? 'text-emerald-600' : 'text-amber-600'}">
-                ${m.played ? '<i class="fa-solid fa-check-circle mr-1"></i>Encerrado' : '<i class="fa-solid fa-hourglass-half mr-1"></i>Em Aberto'}
-              </span>
+              ${canEditDirectly ? `
+                <button class="btn btn-primary btn-sm" onclick="saveScore(${m.id})">Salvar</button>
+              ` : ''}
 
-              ${canEdit ? `
-                <button onclick="openEditMatchModal('${m.id}')" class="text-xs bg-slate-800 hover:bg-slate-900 text-white font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
-                  <i class="fa-solid fa-pen-to-square"></i> Editar Placar
-                </button>
-              ` : `
-                <span class="text-[11px] text-slate-400 italic">Sem permissão para alterar</span>
-              `}
+              ${canSubmitForApproval ? `
+                <button class="btn btn-secondary btn-sm" onclick="submitScoreForApproval(${m.id})">Enviar p/ Aprovação</button>
+              ` : ''}
             </div>
           </div>
         `;
-      }).join('');
+      });
     }
 
-    function renderPlayoffs() {
-      const p = appState.playoffs;
-      const teamsMap = {};
-      appState.teams.forEach(t => teamsMap[t.id] = t.name);
-
-      // Semi 1
-      document.getElementById('semi1-t1-name').innerText = p.semi1.team1 ? teamsMap[p.semi1.team1] : '1º Colocado';
-      document.getElementById('semi1-t2-name').innerText = p.semi1.team2 ? teamsMap[p.semi1.team2] : '4º Colocado';
-      document.getElementById('semi1-t1-score').value = p.semi1.score1;
-      document.getElementById('semi1-t2-score').value = p.semi1.score2;
-
-      // Semi 2
-      document.getElementById('semi2-t1-name').innerText = p.semi2.team1 ? teamsMap[p.semi2.team1] : '2º Colocado';
-      document.getElementById('semi2-t2-name').innerText = p.semi2.team2 ? teamsMap[p.semi2.team2] : '3º Colocado';
-      document.getElementById('semi2-t1-score').value = p.semi2.score1;
-      document.getElementById('semi2-t2-score').value = p.semi2.score2;
-
-      // Final
-      document.getElementById('final-t1-name').innerText = p.final.team1 ? (teamsMap[p.final.team1] || p.final.team1) : 'Vencedor Semi 1';
-      document.getElementById('final-t2-name').innerText = p.final.team2 ? (teamsMap[p.final.team2] || p.final.team2) : 'Vencedor Semi 2';
-      document.getElementById('final-t1-score').value = p.final.score1;
-      document.getElementById('final-t2-score').value = p.final.score2;
-
-      // Enable inputs if allowed
-      const isPresident = appState.role === 'president';
-      document.getElementById('semi1-t1-score').disabled = !isPresident;
-      document.getElementById('semi1-t2-score').disabled = !isPresident;
-      document.getElementById('semi2-t1-score').disabled = !isPresident;
-      document.getElementById('semi2-t2-score').disabled = !isPresident;
-      document.getElementById('final-t1-score').disabled = !isPresident;
-      document.getElementById('final-t2-score').disabled = !isPresident;
-
-      document.getElementById('btn-save-semi1').classList.toggle('hidden', !isPresident);
-      document.getElementById('btn-save-semi2').classList.toggle('hidden', !isPresident);
-      document.getElementById('btn-save-final').classList.toggle('hidden', !isPresident);
-
-      if (p.final.champion) {
-        document.getElementById('champion-display').classList.remove('hidden');
-        document.getElementById('champion-name').innerText = teamsMap[p.final.champion] || p.final.champion;
-      } else {
-        document.getElementById('champion-display').classList.add('hidden');
+    function renderPlayoffs(standings) {
+      if (standings.length >= 4) {
+        document.getElementById('semi1-t1').textContent = standings[0].name;
+        document.getElementById('semi1-t2').textContent = standings[3].name;
+        document.getElementById('semi2-t1').textContent = standings[1].name;
+        document.getElementById('semi2-t2').textContent = standings[2].name;
       }
     }
 
-    function autoPopulatePlayoffs() {
-      const top = calculateStandings();
-      if (top.length < 4) {
-        showToast('É necessário pelo menos 4 times cadastrados para o mata-mata.', 'error');
-        return;
-      }
-      appState.playoffs.semi1.team1 = top[0].id;
-      appState.playoffs.semi1.team2 = top[3].id;
-      appState.playoffs.semi2.team1 = top[1].id;
-      appState.playoffs.semi2.team2 = top[2].id;
-      saveState();
-      showToast('Mata-Mata preenchido com os 4 melhores da tabela!', 'success');
-    }
+    function renderApprovals() {
+      const container = document.getElementById('pendingApprovalsList');
+      container.innerHTML = '';
 
-    function savePlayoffMatch(type) {
-      if (type === 'semi1') {
-        appState.playoffs.semi1.score1 = parseInt(document.getElementById('semi1-t1-score').value) || 0;
-        appState.playoffs.semi1.score2 = parseInt(document.getElementById('semi1-t2-score').value) || 0;
-        appState.playoffs.semi1.played = true;
-
-        // Auto winner to final
-        if (appState.playoffs.semi1.score1 > appState.playoffs.semi1.score2) {
-          appState.playoffs.final.team1 = appState.playoffs.semi1.team1;
-        } else {
-          appState.playoffs.final.team1 = appState.playoffs.semi1.team2;
-        }
-      } else if (type === 'semi2') {
-        appState.playoffs.semi2.score1 = parseInt(document.getElementById('semi2-t1-score').value) || 0;
-        appState.playoffs.semi2.score2 = parseInt(document.getElementById('semi2-t2-score').value) || 0;
-        appState.playoffs.semi2.played = true;
-
-        if (appState.playoffs.semi2.score1 > appState.playoffs.semi2.score2) {
-          appState.playoffs.final.team2 = appState.playoffs.semi2.team1;
-        } else {
-          appState.playoffs.final.team2 = appState.playoffs.semi2.team2;
-        }
-      } else if (type === 'final') {
-        appState.playoffs.final.score1 = parseInt(document.getElementById('final-t1-score').value) || 0;
-        appState.playoffs.final.score2 = parseInt(document.getElementById('final-t2-score').value) || 0;
-        appState.playoffs.final.played = true;
-
-        if (appState.playoffs.final.score1 > appState.playoffs.final.score2) {
-          appState.playoffs.final.champion = appState.playoffs.final.team1;
-        } else {
-          appState.playoffs.final.champion = appState.playoffs.final.team2;
-        }
-      }
-      saveState();
-      showToast('Resultado da fase final salvo!', 'success');
-    }
-
-    function renderFeed() {
-      const container = document.getElementById('feed-posts-list');
-      const approvedPosts = appState.posts.filter(p => p.approved);
-
-      if (approvedPosts.length === 0) {
-        container.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-slate-400 text-sm">Nenhuma publicação efetuada ainda.</div>`;
+      if (state.pendingApprovals.length === 0) {
+        container.innerHTML = '<p style="color:#64748b;">Nenhuma solicitação pendente.</p>';
         return;
       }
 
-      container.innerHTML = approvedPosts.map(p => `
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-          <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-slate-800 flex items-center gap-1.5">
-              <i class="fa-solid fa-circle-user text-brand-600"></i> ${p.author}
-            </span>
-            <span class="text-slate-400">${p.date}</span>
+      state.pendingApprovals.forEach((item, index) => {
+        const match = state.matches.find(m => m.id === item.matchId);
+        const teamA = state.teams.find(t => t.id === match.teamAId);
+        const teamB = state.teams.find(t => t.id === match.teamBId);
+
+        container.innerHTML += `
+          <div class="match-card" style="border-left: 4px solid var(--warning);">
+            <p><strong>Solicitante:</strong> Membro do Grêmio</p>
+            <p><strong>Partida:</strong> ${teamA.name} ${item.scoreA} x ${item.scoreB} ${teamB.name}</p>
+            <div style="margin-top: 0.5rem; display:flex; gap:0.5rem;">
+              <button class="btn btn-success btn-sm" onclick="approveScore(${index})">Aprovar</button>
+              <button class="btn btn-danger btn-sm" onclick="rejectScore(${index})">Rejeitar</button>
+            </div>
           </div>
-          <p class="text-sm text-slate-700 leading-relaxed">${p.text}</p>
-        </div>
-      `).join('');
+        `;
+      });
     }
 
-    function submitFeedPost() {
-      const input = document.getElementById('feed-input');
-      const text = input.value.trim();
-      if (!text) return;
+    function renderOptions() {
+      const selectA = document.getElementById('matchTeamA');
+      const selectB = document.getElementById('matchTeamB');
+      if (!selectA || !selectB) return;
 
-      const newPost = {
-        id: 'p_' + Date.now(),
-        author: getRoleName(appState.role),
-        text: text,
-        date: new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }),
-        approved: appState.role === 'president' || appState.role === 'sports_comm'
-      };
+      selectA.innerHTML = '';
+      selectB.innerHTML = '';
 
-      if (newPost.approved) {
-        appState.posts.unshift(newPost);
-        showToast('Publicação enviada e publicada!', 'success');
-      } else {
-        appState.pendingEdits.push({
-          type: 'post',
-          author: newPost.author,
-          details: `"${text.substring(0, 30)}..."`,
-          data: newPost
-        });
-        showToast('Sua publicação foi enviada para aprovação do Grêmio!', 'info');
-      }
-
-      input.value = '';
-      saveState();
+      state.teams.forEach(t => {
+        selectA.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+        selectB.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+      });
     }
 
-    // --- MODAL & ACTION HANDLERS ---
-
-    // Team Modal
-    function openTeamsModal() {
-      document.getElementById('modal-teams').classList.remove('hidden');
-      document.getElementById('modal-teams').classList.add('flex');
-      renderTeamsManageList();
-    }
-    function closeTeamsModal() {
-      document.getElementById('modal-teams').classList.add('hidden');
-      document.getElementById('modal-teams').classList.remove('flex');
-    }
-    function renderTeamsManageList() {
-      const list = document.getElementById('teams-list-manage');
-      list.innerHTML = appState.teams.map(t => `
-        <div class="flex items-center justify-between p-2.5 text-xs">
-          <span class="font-semibold text-slate-700">${t.name}</span>
-          <button onclick="removeTeam('${t.id}')" class="text-red-500 hover:text-red-700 font-bold"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      `).join('');
-    }
-    function addTeam() {
-      const input = document.getElementById('new-team-name');
-      const name = input.value.trim();
-      if (!name) return;
-      appState.teams.push({ id: 't_' + Date.now(), name: name });
-      input.value = '';
-      renderTeamsManageList();
-      saveState();
-    }
-    function removeTeam(id) {
-      appState.teams = appState.teams.filter(t => t.id !== id);
-      renderTeamsManageList();
-      saveState();
+    function renderAll() {
+      renderStandings();
+      renderMatches();
+      renderApprovals();
+      renderOptions();
     }
 
-    // Edit Match Modal
-    function openEditMatchModal(matchId) {
-      const match = appState.matches.find(m => m.id === matchId);
-      if (!match) return;
+    // --- AÇÕES DE EDIÇÃO E REGRAS DE NEGÓCIO ---
+    function saveScore(matchId) {
+      const scoreA = document.getElementById(`scoreA_${matchId}`).value;
+      const scoreB = document.getElementById(`scoreB_${matchId}`).value;
 
-      const teamsMap = {};
-      appState.teams.forEach(t => teamsMap[t.id] = t.name);
-
-      document.getElementById('edit-match-id').value = match.id;
-      document.getElementById('modal-team1-name').innerText = teamsMap[match.team1Id] || 'Time 1';
-      document.getElementById('modal-team2-name').innerText = teamsMap[match.team2Id] || 'Time 2';
-      document.getElementById('modal-team1-score').value = match.score1;
-      document.getElementById('modal-team2-score').value = match.score2;
-
-      document.getElementById('modal-window-start').value = match.windowStart || '';
-      document.getElementById('modal-window-end').value = match.windowEnd || '';
-
-      const isPresident = appState.role === 'president';
-      document.getElementById('modal-window-section').style.display = isPresident ? 'block' : 'none';
-
-      const isMember = appState.role === 'gremio_member';
-      document.getElementById('modal-reason-container').classList.toggle('hidden', !isMember);
-
-      document.getElementById('modal-edit-match').classList.remove('hidden');
-      document.getElementById('modal-edit-match').classList.add('flex');
-    }
-
-    function closeEditMatchModal() {
-      document.getElementById('modal-edit-match').classList.add('hidden');
-      document.getElementById('modal-edit-match').classList.remove('flex');
-    }
-
-    function saveMatchEdit() {
-      const matchId = document.getElementById('edit-match-id').value;
-      const match = appState.matches.find(m => m.id === matchId);
-      if (!match) return;
-
-      const score1 = parseInt(document.getElementById('modal-team1-score').value) || 0;
-      const score2 = parseInt(document.getElementById('modal-team2-score').value) || 0;
-
-      // Role Logic Checks
-      if (appState.role === 'sports_comm') {
-        if (!isWindowOpen(match)) {
-          showToast('FORA DA JANELA PERMITIDA: A comissão só pode alterar placares durante a janela estipulada!', 'error');
-          return;
-        }
-        match.score1 = score1;
-        match.score2 = score2;
-        match.played = true;
-        showToast('Placar alterado com sucesso pela Comissão de Esportes!', 'success');
-      } else if (appState.role === 'president') {
-        match.score1 = score1;
-        match.score2 = score2;
-        match.played = true;
-        match.windowStart = document.getElementById('modal-window-start').value;
-        match.windowEnd = document.getElementById('modal-window-end').value;
-        showToast('Jogo e janela atualizados com sucesso!', 'success');
-      } else if (appState.role === 'gremio_member') {
-        const reason = document.getElementById('modal-edit-reason').value.trim();
-        appState.pendingEdits.push({
-          type: 'score',
-          author: 'Membro do Grêmio',
-          details: `Jogo ID ${match.id} -> ${score1}x${score2} (${reason || 'Sem motivo'})`,
-          data: { matchId: match.id, score1, score2 }
-        });
-        showToast('Solicitação de alteração enviada para aprovação do Presidente!', 'info');
-      }
-
-      closeEditMatchModal();
-      saveState();
-    }
-
-    // Add Fixture Modal
-    function openAddFixtureModal() {
-      const select1 = document.getElementById('new-fixture-t1');
-      const select2 = document.getElementById('new-fixture-t2');
-
-      const options = appState.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
-      select1.innerHTML = options;
-      select2.innerHTML = options;
-
-      document.getElementById('modal-add-fixture').classList.remove('hidden');
-      document.getElementById('modal-add-fixture').classList.add('flex');
-    }
-
-    function closeAddFixtureModal() {
-      document.getElementById('modal-add-fixture').classList.add('hidden');
-      document.getElementById('modal-add-fixture').classList.remove('flex');
-    }
-
-    function createNewFixture() {
-      const t1 = document.getElementById('new-fixture-t1').value;
-      const t2 = document.getElementById('new-fixture-t2').value;
-      const round = document.getElementById('new-fixture-round').value || 'Rodada Geral';
-      const start = document.getElementById('new-fixture-start').value;
-      const end = document.getElementById('new-fixture-end').value;
-
-      if (t1 === t2) {
-        showToast('Selecione dois times diferentes!', 'error');
+      if (scoreA === '' || scoreB === '') {
+        alert('Preencha ambos os placares!');
         return;
       }
 
-      appState.matches.push({
-        id: 'm_' + Date.now(),
-        round: round,
-        team1Id: t1,
-        team2Id: t2,
-        score1: 0,
-        score2: 0,
-        played: false,
+      const match = state.matches.find(m => m.id === matchId);
+      if (match) {
+        match.scoreA = parseInt(scoreA);
+        match.scoreB = parseInt(scoreB);
+        match.status = 'finished';
+        saveData();
+        renderAll();
+        alert('Placar atualizado com sucesso!');
+      }
+    }
+
+    function submitScoreForApproval(matchId) {
+      const scoreA = document.getElementById(`scoreA_${matchId}`).value;
+      const scoreB = document.getElementById(`scoreB_${matchId}`).value;
+
+      if (scoreA === '' || scoreB === '') {
+        alert('Preencha ambos os placares antes de enviar!');
+        return;
+      }
+
+      state.pendingApprovals.push({
+        matchId: matchId,
+        scoreA: parseInt(scoreA),
+        scoreB: parseInt(scoreB)
+      });
+
+      saveData();
+      updateUIForRole();
+      alert('Placar enviado para aprovação da Presidente ou Superadmin!');
+    }
+
+    function approveScore(index) {
+      const item = state.pendingApprovals[index];
+      const match = state.matches.find(m => m.id === item.matchId);
+
+      if (match) {
+        match.scoreA = item.scoreA;
+        match.scoreB = item.scoreB;
+        match.status = 'finished';
+      }
+
+      state.pendingApprovals.splice(index, 1);
+      saveData();
+      updateUIForRole();
+      renderAll();
+    }
+
+    function rejectScore(index) {
+      state.pendingApprovals.splice(index, 1);
+      saveData();
+      updateUIForRole();
+      renderAll();
+    }
+
+    function addTeam() {
+      const input = document.getElementById('newTeamName');
+      const name = input.value.trim();
+
+      if (!name) return;
+
+      const newId = state.teams.length ? Math.max(...state.teams.map(t => t.id)) + 1 : 1;
+      state.teams.push({ id: newId, name: name });
+      input.value = '';
+
+      saveData();
+      renderAll();
+    }
+
+    function createMatch() {
+      const teamAId = parseInt(document.getElementById('matchTeamA').value);
+      const teamBId = parseInt(document.getElementById('matchTeamB').value);
+      const start = document.getElementById('windowStart').value;
+      const end = document.getElementById('windowEnd').value;
+
+      if (teamAId === teamBId) {
+        alert('Selecione dois times diferentes!');
+        return;
+      }
+
+      const newMatch = {
+        id: Date.now(),
+        teamAId: teamAId,
+        teamBId: teamBId,
+        scoreA: null,
+        scoreB: null,
+        status: 'scheduled',
         windowStart: start,
         windowEnd: end
-      });
-
-      closeAddFixtureModal();
-      saveState();
-      showToast('Novo confronto cadastrado!', 'success');
-    }
-
-    // Pending Approvals Logic
-    function approvePending(index) {
-      const item = appState.pendingEdits[index];
-      if (!item) return;
-
-      if (item.type === 'score') {
-        const match = appState.matches.find(m => m.id === item.data.matchId);
-        if (match) {
-          match.score1 = item.data.score1;
-          match.score2 = item.data.score2;
-          match.played = true;
-        }
-      } else if (item.type === 'post') {
-        item.data.approved = true;
-        appState.posts.unshift(item.data);
-      }
-
-      appState.pendingEdits.splice(index, 1);
-      saveState();
-      showToast('Solicitação aprovada!', 'success');
-    }
-
-    function rejectPending(index) {
-      appState.pendingEdits.splice(index, 1);
-      saveState();
-      showToast('Solicitação rejeitada.', 'info');
-    }
-
-    // --- HELPER UTILITIES ---
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('border-brand-600', 'text-brand-700');
-        btn.classList.add('border-transparent', 'text-slate-500');
-      });
-
-      document.getElementById(tabId).classList.remove('hidden');
-      const activeBtn = document.getElementById('btn-' + tabId);
-      if (activeBtn) {
-        activeBtn.classList.remove('border-transparent', 'text-slate-500');
-        activeBtn.classList.add('border-brand-600', 'text-brand-700');
-      }
-    }
-
-    function formatDateTime(dtStr) {
-      if (!dtStr) return 'Não definida';
-      const d = new Date(dtStr);
-      return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-    }
-
-    function getRoleName(role) {
-      const names = {
-        'president': 'Presidente do Grêmio',
-        'sports_comm': 'Comissão de Esportes',
-        'gremio_member': 'Membro do Grêmio',
-        'visitor': 'Visitante'
       };
-      return names[role] || 'Usuário';
+
+      state.matches.push(newMatch);
+      saveData();
+      renderAll();
+      alert('Partida cadastrada com sucesso!');
     }
 
-    function showToast(msg, type = 'info') {
-      const toast = document.getElementById('toast-message');
-      const text = document.getElementById('toast-text');
-      const icon = document.getElementById('toast-icon');
-
-      text.innerText = msg;
-      toast.classList.remove('hidden', 'bg-emerald-50', 'bg-red-50', 'bg-blue-50', 'border-emerald-200', 'border-red-200', 'border-blue-200', 'text-emerald-800', 'text-red-800', 'text-blue-800');
-
-      if (type === 'success') {
-        toast.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-800');
-        icon.className = 'fa-solid fa-circle-check text-emerald-600 text-xl';
-      } else if (type === 'error') {
-        toast.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
-        icon.className = 'fa-solid fa-triangle-exclamation text-red-600 text-xl';
-      } else {
-        toast.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-800');
-        icon.className = 'fa-solid fa-circle-info text-blue-600 text-xl';
-      }
-
-      toast.classList.remove('hidden');
-      setTimeout(() => hideToast(), 4000);
-    }
-
-    function hideToast() {
-      document.getElementById('toast-message').classList.add('hidden');
-    }
+    // Inicialização
+    updateUIForRole();
+    renderAll();
   </script>
 </body>
 </html>
